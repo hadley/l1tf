@@ -18,3 +18,15 @@ SEXP l1tf_R(SEXP y, SEXP lambda_) {
   UNPROTECT(1);
   return out;
 }
+
+
+SEXP l1tf_lambdamax_R(SEXP y) {
+  if (TYPEOF(y) != REALSXP) {
+    error("y must be a numeric vector");
+  }
+
+  // double l1tf_lambdamax(const int n, double *y);
+  double max = l1tf_lambdamax(length(y), REAL(y));
+
+  return ScalarReal(max);
+}

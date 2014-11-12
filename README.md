@@ -16,5 +16,5 @@ install_github("hadley/l1tf")
 ```{r}
 plot(snp500, type = "l")
 lines(l1ft(snp500, lambda = 50), col = "red")
-lines(l1ft(snp500, lambda_p = 0.01), col = "red")
+lines(l1ft(snp500, prop = 0.01), col = "red")
 ```

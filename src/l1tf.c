@@ -7,6 +7,8 @@
  * Author: Kwangmoo Koh (deneb1@stanford.edu)
  */
 
+#include <R.h>
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -132,7 +134,7 @@ int l1tf(const int n, const double *y, const double lambda, double *x)
     F77_CALL(dpbtrf)("L",&m,&itwo,DDTF,&ithree,&info);
     if (info > 0) /* if Cholesky factorization fails, try LU factorization */
     {
-        fprintf(stderr,"Changing to LU factorization\n");
+        Rprintf("Changing to LU factorization\n");
         ddtf_chol = FALSE;
         dptr = DDTF;
         for (i = 0; i < m; i++)
@@ -163,7 +165,7 @@ int l1tf(const int n, const double *y, const double lambda, double *x)
     DTx(m,z,DTz); /* DTz = D'*z */
     Dx(n,DTz,DDTz); /* DDTz = D*D'*z */
 
-    fprintf(stderr,"%s %13s %12s %8s\n","Iteration","Primal obj.", \
+    Rprintf("%s %13s %12s %8s\n","Iteration","Primal obj.", \
             "Dual obj.","Gap");
 
     /*---------------------------------------------------------------------*
@@ -198,13 +200,13 @@ int l1tf(const int n, const double *y, const double lambda, double *x)
 
         gap   = pobj - dobj;
 
-        fprintf(stderr,"%6d %15.4e %13.5e %10.2e\n",iters,pobj,dobj,gap);
+        Rprintf("%6d %15.4e %13.5e %10.2e\n",iters,pobj,dobj,gap);
 
         /* STOPPING CRITERION */
 
         if (gap <= TOL)
         {
-            fprintf(stderr,"Solved\n");
+            Rprintf("Solved\n");
             F77_CALL(dcopy)(&n,y,&ione,x,&ione);
             F77_CALL(daxpy)(&n,&dminusone,DTz,&ione,x,&ione);
             return(0);
@@ -307,7 +309,7 @@ int l1tf(const int n, const double *y, const double lambda, double *x)
             step *= BETA;
         }
     }
-    fprintf(stderr,"Maxiter exceeded\n");
+    Rprintf("Maxiter exceeded\n");
     F77_CALL(dcopy)(&n,y,&ione,x,&ione);
     F77_CALL(daxpy)(&n,&dminusone,DTz,&ione,x,&ione);
     return(0);
@@ -337,7 +339,7 @@ double l1tf_lambdamax(const int n, double *y)
     F77_CALL(dpbsv)("L",&m,&itwo,&ione,mat,&ithree,vec,&m,&info);
     if (info > 0) /* if Cholesky factorization fails, try LU factorization */
     {
-        fprintf(stderr,"Changing to LU factorization\n");
+        Rprintf("Changing to LU factorization\n");
         dptr = mat;
         for (i = 0; i < m; i++)
         {
@@ -415,25 +417,4 @@ double vecsum(int n, const double *x)
     while (n-- != 0)
         ret += *x++;
     return ret;
-}
-
-
-/* Print vector of double type */
-void print_dvec(int n, const double *x)
-{
-    int i;
-    fprintf(stdout,"\n");
-    for (i = 0; i < n; i++)
-        fprintf(stdout,"%e\n",x[i]);
-    fprintf(stdout,"\n");
-}
-
-/* Print vector of int type */
-void print_ivec(int n, const int *x)
-{
-    int i;
-    fprintf(stdout,"\n");
-    for (i = 0; i < n; i++)
-        fprintf(stdout,"%d  ",x[i]);
-    fprintf(stdout,"\n");
 }

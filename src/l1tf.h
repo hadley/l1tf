@@ -14,10 +14,10 @@ extern "C" {
 #endif
 
 /* main routine for l1 trend filtering */
-int l1tf(const int n, const double *y, const double lambda, double *x);
+int l1tf(const int n, const double *y, const double lambda, double *x, int debug);
 
 /* utilit to compte the maximum value of lambda */
-double l1tf_lambdamax(const int n, double *y);
+double l1tf_lambdamax(const int n, double *y, int debug);
 
 #ifdef __cplusplus
 }

@@ -52,7 +52,7 @@ void   print_ivec(int n, const int *x); /* for debug */
  *              l1tf : main routine for l1 trend filtering                  *
  *                                                                          *
  ****************************************************************************/
-int l1tf(const int n, const double *y, const double lambda, double *x)
+int l1tf(const int n, const double *y, const double lambda, double *x, int debug)
 {
     /* parameters */
     const double ALPHA      = 0.01; /* linesearch parameter (0,0.5] */
@@ -134,7 +134,7 @@ int l1tf(const int n, const double *y, const double lambda, double *x)
     F77_CALL(dpbtrf)("L",&m,&itwo,DDTF,&ithree,&info);
     if (info > 0) /* if Cholesky factorization fails, try LU factorization */
     {
-        Rprintf("Changing to LU factorization\n");
+        if (debug) Rprintf("Changing to LU factorization\n");
         ddtf_chol = FALSE;
         dptr = DDTF;
         for (i = 0; i < m; i++)
@@ -165,7 +165,7 @@ int l1tf(const int n, const double *y, const double lambda, double *x)
     DTx(m,z,DTz); /* DTz = D'*z */
     Dx(n,DTz,DDTz); /* DDTz = D*D'*z */
 
-    Rprintf("%s %13s %12s %8s\n","Iteration","Primal obj.", \
+    if (debug) Rprintf("%s %13s %12s %8s\n","Iteration","Primal obj.", \
             "Dual obj.","Gap");
 
     /*---------------------------------------------------------------------*
@@ -200,13 +200,13 @@ int l1tf(const int n, const double *y, const double lambda, double *x)
 
         gap   = pobj - dobj;
 
-        Rprintf("%6d %15.4e %13.5e %10.2e\n",iters,pobj,dobj,gap);
+        if (debug) Rprintf("%6d %15.4e %13.5e %10.2e\n",iters,pobj,dobj,gap);
 
         /* STOPPING CRITERION */
 
         if (gap <= TOL)
         {
-            Rprintf("Solved\n");
+            if (debug) Rprintf("Solved\n");
             F77_CALL(dcopy)(&n,y,&ione,x,&ione);
             F77_CALL(daxpy)(&n,&dminusone,DTz,&ione,x,&ione);
             return(0);
@@ -309,13 +309,13 @@ int l1tf(const int n, const double *y, const double lambda, double *x)
             step *= BETA;
         }
     }
-    Rprintf("Maxiter exceeded\n");
+    if (debug) Rprintf("Maxiter exceeded\n");
     F77_CALL(dcopy)(&n,y,&ione,x,&ione);
     F77_CALL(daxpy)(&n,&dminusone,DTz,&ione,x,&ione);
     return(0);
 }
 
-double l1tf_lambdamax(const int n, double *y)
+double l1tf_lambdamax(const int n, double *y, int debug)
 {
     int i, m, info;
     double maxval;
@@ -339,7 +339,7 @@ double l1tf_lambdamax(const int n, double *y)
     F77_CALL(dpbsv)("L",&m,&itwo,&ione,mat,&ithree,vec,&m,&info);
     if (info > 0) /* if Cholesky factorization fails, try LU factorization */
     {
-        Rprintf("Changing to LU factorization\n");
+        if (debug) Rprintf("Changing to LU factorization\n");
         dptr = mat;
         for (i = 0; i < m; i++)
         {

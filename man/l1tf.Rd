@@ -3,7 +3,7 @@
 \alias{l1tf}
 \title{L1 trend filteirng}
 \usage{
-l1tf(x, lambda, prop = 0.1)
+l1tf(x, lambda, prop = 0.1, debug = FALSE)
 }
 \arguments{
 \item{x}{Numeric vector of inputs. Must be equally spaced in time.}
@@ -13,6 +13,8 @@ simplicity. Small values favour accuracy; large values favour simplicity.}
 
 \item{prop}{A number between 0 and 1. Specify lambda as a proportion of the
 maximum lambda for the input dataset.}
+
+\item{debug}{If \code{TRUE} will print details about each iteration.}
 }
 \description{
 L1 trend filteirng

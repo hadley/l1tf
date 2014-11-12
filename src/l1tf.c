@@ -15,7 +15,7 @@
 #include <math.h>
 
 #include <R_ext/BLAS.h>
-#include <R_ext/lapack.h>
+#include <R_ext/Lapack.h>
 
 #ifndef F77_CALL
 #define F77_CALL(x) x ## _

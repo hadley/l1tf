@@ -12,8 +12,8 @@
 #include <string.h>
 #include <math.h>
 
-#include "blas.h"
-#include "lapack.h"
+#include <R_ext/BLAS.h>
+#include <R_ext/lapack.h>
 
 #ifndef F77_CALL
 #define F77_CALL(x) x ## _
@@ -247,7 +247,7 @@ int l1tf(const int n, const double *y, const double lambda, double *x)
             dmu2[i] = -(mu2[i]+((1/t)-dz[i]*mu2[i])/f2[i]);
         }
         norm2_res = sqrt(norm2_res);
-        
+
         /* BACKTRACKING LINESEARCH */
 
         ratio = 2;   /* any number larger than 1/0.99 */
@@ -392,7 +392,7 @@ void DTx(const int n, const double *x, double *y)
         *y++ = *x-*(x+1)-*(x+1)+*(x+2); /* y[2..n-1]*/
     *y++ = *x-*(x+1)-*(x+1); x++;       /* y[n]     */
     *y = *x;                            /* y[n+1]   */
-} 
+}
 
 /* Computes y = a./x, where x has length n */
 void yainvx(int n, const double a, const double *x, double *y)

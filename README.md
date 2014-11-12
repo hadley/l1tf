@@ -1,6 +1,6 @@
-# l1tf: A C solver for l1 trend filtering
+# l1tf: l1 trend filtering
 
-This is an R package wrapper around the [l1tf algorithm](https://web.stanford.edu/~boyd/l1_tf/) by Kwangmoo Koh, Seung-Jean Kim and Stephen Boyd.
+This is an R package wrapper around the C solver for the [l1 trend filtering algorithm](https://web.stanford.edu/~boyd/l1_tf/) written by Kwangmoo Koh, Seung-Jean Kim and Stephen Boyd.
 
 ## Installation
 

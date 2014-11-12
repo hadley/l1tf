@@ -44,9 +44,6 @@ void   yainvx(int n, const double a, const double *x, double *y); /* y = a./x */
 void   vecset(int n, const double val, double *dst);
 double vecsum(int n, const double *src);
 
-void   print_dvec(int n, const double *x); /* for debug */
-void   print_ivec(int n, const int *x); /* for debug */
-
 /****************************************************************************
  *                                                                          *
  *              l1tf : main routine for l1 trend filtering                  *

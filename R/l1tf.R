@@ -14,6 +14,10 @@
 #' plot(x)
 #' lines(l1tf(x), col = "red")
 #' lines(l1tf(x, prop = 0.01), col = "blue")
+#'
+#' # SP500 example from paper
+#' plot(sp500$date, log(sp500$log), type="l", col="grey50", ylab="log-price")
+#' lines(sp500$date, l1tf(log(sp500$raw), lambda=100), col="blue")
 l1tf <- function(x, lambda, prop = 0.1, debug = FALSE) {
   if (missing(lambda)) {
     max <- .Call(l1tf_lambdamax_R, x, debug)

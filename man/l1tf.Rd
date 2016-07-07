@@ -27,7 +27,7 @@ lines(l1tf(x), col = "red")
 lines(l1tf(x, prop = 0.01), col = "blue")
 
 # SP500 example from paper
-plot(sp500$date, log(sp500$log), type="l", col="grey50", ylab="log-price")
+plot(sp500$date, log(sp500$raw), type="l", col="grey50", ylab="log-price")
 lines(sp500$date, l1tf(log(sp500$raw), lambda=100), col="blue")
 }
 

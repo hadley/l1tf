@@ -1,6 +1,5 @@
 #include <R.h>
 #include <Rinternals.h>
-#include <R_ext/BLAS.h>
 
 #include "l1tf.h"
 

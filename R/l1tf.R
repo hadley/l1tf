@@ -6,7 +6,7 @@
 #' @param prop A number between 0 and 1. Specify lambda as a proportion of the
 #'   maximum lambda for the input dataset.
 #' @param debug If `TRUE` will print details about each iteration.
-#' @useDynLib l1tf l1tf_R l1tf_lambdamax_R
+#' @useDynLib l1tf, .registration = TRUE
 #' @export
 #' @examples
 #' x <- runif(1000)

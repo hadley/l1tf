@@ -317,6 +317,26 @@ int l1tf(const int n, const double *y, const double lambda, double *x, int debug
     if (debug) Rprintf("Maxiter exceeded\n");
     F77_CALL(dcopy)(&n,y,&ione,x,&ione);
     F77_CALL(daxpy)(&n,&dminusone,DTz,&ione,x,&ione);
+    
+    free(S);
+    free(DDTF);
+    free(DTz);
+    free(Dy);
+    free(DDTz);
+    free(z);
+    free(mu1);
+    free(mu2);
+    free(f1);
+    free(f2);
+    free(dz);
+    free(dmu1);
+    free(dmu2);
+    free(w);
+    free(rz);
+    free(tmp_m1);
+    free(tmp_m2);
+    free(IPIV);
+    
     return(0);
 }
 
@@ -365,7 +385,11 @@ double l1tf_lambdamax(const int n, double *y, int debug)
     {
         if (fabs(vec[i]) > maxval) maxval = fabs(vec[i]);
     }
-
+    
+    free(vec);
+    free(mat);
+    free(piv);
+    
     return maxval;
 }
 

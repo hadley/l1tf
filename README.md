@@ -4,6 +4,8 @@
 # l1tf: l1 trend filtering
 
 <!-- badges: start -->
+
+[![R-CMD-check](https://github.com/hadley/l1tf/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/hadley/l1tf/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 This is an R package wrapper around the C solver for the [l1 trend

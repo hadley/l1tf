@@ -7,6 +7,10 @@
  * Author: Kwangmoo Koh (deneb1@stanford.edu)
  */
 
+#ifndef USE_FC_LEN_T
+#define USE_FC_LEN_T
+#endif
+
 #include <R.h>
 
 #include <stdio.h>
@@ -16,6 +20,10 @@
 
 #include <R_ext/BLAS.h>
 #include <R_ext/Lapack.h>
+
+#ifndef FCONE
+#define FCONE
+#endif
 
 #ifndef F77_CALL
 #define F77_CALL(x) x ## _
@@ -128,7 +136,7 @@ int l1tf(const int n, const double *y, const double lambda, double *x, int debug
         *dptr++ =-4.0;
         *dptr++ = 1.0;
     }
-    F77_CALL(dpbtrf)("L",&m,&itwo,DDTF,&ithree,&info);
+    F77_CALL(dpbtrf)("L",&m,&itwo,DDTF,&ithree,&info FCONE);
     if (info > 0) /* if Cholesky factorization fails, try LU factorization */
     {
         if (debug) Rprintf("Changing to LU factorization\n");
@@ -184,9 +192,9 @@ int l1tf(const int n, const double *y, const double lambda, double *x, int debug
 
         F77_CALL(dcopy)(&m,w,&ione,tmp_m1,&ione); /* tmp_m1 = w*(D*D')^-1*w */
         if (ddtf_chol == TRUE) {
-            F77_CALL(dpbtrs)("L",&m,&itwo,&ione,DDTF,&ithree,tmp_m1,&m,&info);
+            F77_CALL(dpbtrs)("L",&m,&itwo,&ione,DDTF,&ithree,tmp_m1,&m,&info FCONE);
         } else {
-            F77_CALL(dgbtrs)("N",&m,&itwo,&itwo,&ione,DDTF,&iseven,IPIV,tmp_m1,&m,&info);
+            F77_CALL(dgbtrs)("N",&m,&itwo,&itwo,&ione,DDTF,&iseven,IPIV,tmp_m1,&m,&info FCONE);
         }
 
         pobj1 = 0.5*F77_CALL(ddot)(&m,w,&ione,tmp_m1,&ione)
@@ -232,7 +240,7 @@ int l1tf(const int n, const double *y, const double lambda, double *x, int debug
             *dptr++ = 1.0;
         }
 
-        F77_CALL(dpbsv)("L",&m,&itwo,&ione,S,&ithree,dz,&m,&info); /* dz=S\r */
+        F77_CALL(dpbsv)("L",&m,&itwo,&ione,S,&ithree,dz,&m,&info FCONE); /* dz=S\r */
 
         norm2_res = F77_CALL(ddot)(&m,rz,&ione,rz,&ione);
         for (i = 0; i < m; i++)
@@ -333,7 +341,7 @@ double l1tf_lambdamax(const int n, double *y, int debug)
         *dptr++ = 1.0;
     }
 
-    F77_CALL(dpbsv)("L",&m,&itwo,&ione,mat,&ithree,vec,&m,&info);
+    F77_CALL(dpbsv)("L",&m,&itwo,&ione,mat,&ithree,vec,&m,&info FCONE);
     if (info > 0) /* if Cholesky factorization fails, try LU factorization */
     {
         if (debug) Rprintf("Changing to LU factorization\n");
